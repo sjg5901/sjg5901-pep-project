@@ -1,7 +1,10 @@
 package Controller;
 
+import Model.*;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -16,7 +19,14 @@ public class SocialMediaController {
      */
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.get("example-endpoint", this::exampleHandler);
+        app.post("/register", this::insertNewAccountHandler);
+        app.post("/login", this::verifyLoginHandler);
+        app.post("/messages", this::createNewMessageHandler);
+        app.get("/messages", this::getAllMessagesHandler);
+        app.get("/messages/{message_id}", this::getMessageByIdHandler);
+        app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
+        app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
+        app.get("/accounts/{account_id}/messages", this::getAllMessagesByAccountIdHandler);
 
         return app;
     }
@@ -25,9 +35,35 @@ public class SocialMediaController {
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
-    private void exampleHandler(Context context) {
+    private void insertNewAccountHandler(Context context) {
         context.json("sample text");
     }
 
+    private void createNewMessageHandler(Context context) {
+        context.json("sample text");
+    }
 
+    private void verifyLoginHandler(Context context) {
+        context.json("sample text");
+    }
+
+    private void getAllMessagesHandler(Context context) {
+        context.json("sample text");
+    }
+
+    private void getMessageByIdHandler(Context context) {
+        context.json("sample text");
+    }
+
+    private void deleteMessageByIdHandler(Context context) {
+        context.json("sample text");
+    }
+
+    private void updateMessageByIdHandler(Context context) {
+        context.json("sample text");
+    }
+
+    private void getAllMessagesByAccountIdHandler(Context context) {
+        context.json("sample text");
+    }
 }
