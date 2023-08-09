@@ -18,14 +18,14 @@ public class AccountService {
 
 
     public Account addAccount(Account account) {
+        // will return null if entry is a blank username, or the username exists in the database, or password length inadequate
 
-        if (!account.getUsername().isBlank() && accountDAO.getAccountByUsername(account.getUsername()) == null && account.getPassword().length() >= 4) {
-            return accountDAO.registerAccount(account);
-        } 
-
-        // will return null if entry is a blank username, or the username exists in the database
-
-        return null;
+        return accountDAO.registerAccount(account);
     
+    }
+
+
+    public Account verifyLogin(Account account) {
+        return accountDAO.verifyAccount(account);
     }
 }

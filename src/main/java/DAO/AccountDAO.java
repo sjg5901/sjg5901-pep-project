@@ -31,9 +31,13 @@ public class AccountDAO {
         return null;
     }
 
-
+    // CREATION operation
     public Account registerAccount(Account account) {
         Connection connection = ConnectionUtil.getConnection();
+
+        // quick handler for valid usernames or passwords
+        if (account.getUsername().isBlank() || account.getPassword().length() < 4) return null;
+
 
         try {
 
@@ -46,7 +50,7 @@ public class AccountDAO {
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()) {
-                int db_generated_id = (int) rs.getLong(1);
+                int db_generated_id = rs.getInt(1);
                 return new Account(db_generated_id, account.getUsername(), account.getPassword());
             }
         } catch (SQLException e) {
@@ -57,6 +61,32 @@ public class AccountDAO {
         return null;
     }
 
+    // READ operation
+    public Account verifyAccount(Account account) {
+        Connection connection = ConnectionUtil.getConnection();
 
+        try {
+
+            String sql = "SELECT * FROM account WHERE username = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, account.getUsername());
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+
+                // check required to see if provided password matched correct password in database
+                if (!rs.getString("password").equals(account.getPassword())) break;
+
+                return new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("password"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
+   
 
 }

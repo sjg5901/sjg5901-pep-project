@@ -31,7 +31,7 @@ public class SocialMediaController {
         app.post("/register", this::postNewAccountHandler);
 
 
-        // app.post("/login", this::verifyLoginHandler);
+        app.post("/login", this::verifyLoginHandler);
         // app.post("/messages", this::postNewMessageHandler);
         // app.get("/messages", this::getAllMessagesHandler);
         // app.get("/messages/{message_id}", this::getMessageByIdHandler);
@@ -61,19 +61,20 @@ public class SocialMediaController {
 
 
 
-    /* 
+    
     private void verifyLoginHandler(Context context) throws JsonProcessingException {
         ObjectMapper obj = new ObjectMapper();
         Account account = obj.readValue(context.body(), Account.class);
         Account newLogin = accountService.verifyLogin(account);
 
         if (newLogin == null) {
-            context.status(400);
+            context.status(401);
         } else {
             context.json(obj.writeValueAsString(newLogin));
         }
     }
 
+    /* 
     private void postNewMessageHandler(Context context) throws JsonProcessingException {
         ObjectMapper obj = new ObjectMapper();
         Message message = obj.readValue(context.body(), Message.class);
