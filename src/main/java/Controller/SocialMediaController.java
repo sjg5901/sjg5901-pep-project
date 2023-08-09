@@ -32,9 +32,9 @@ public class SocialMediaController {
 
 
         app.post("/login", this::verifyLoginHandler);
-        // app.post("/messages", this::postNewMessageHandler);
-        // app.get("/messages", this::getAllMessagesHandler);
-        // app.get("/messages/{message_id}", this::getMessageByIdHandler);
+        app.post("/messages", this::postNewMessageHandler);
+        app.get("/messages", this::getAllMessagesHandler);
+        app.get("/messages/{message_id}", this::getMessageByIdHandler);
         // app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
         // app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
         // app.get("/accounts/{account_id}/messages", this::getAllMessagesByAccountIdHandler);
@@ -74,7 +74,7 @@ public class SocialMediaController {
         }
     }
 
-    /* 
+     
     private void postNewMessageHandler(Context context) throws JsonProcessingException {
         ObjectMapper obj = new ObjectMapper();
         Message message = obj.readValue(context.body(), Message.class);
@@ -87,14 +87,21 @@ public class SocialMediaController {
         }
     }
 
+    
     private void getAllMessagesHandler(Context context) {
         context.json(messageService.getAllMessages());
     }
 
+
+     
     private void getMessageByIdHandler(Context context) {
-        context.json(messageService.getMessageById(context.pathParam("message_id")));
+        String str = context.pathParam("message_id");
+        int num = Integer.parseInt(str);
+    
+        context.json(messageService.getMessageById(num));
     }
 
+    /*
     private void deleteMessageByIdHandler(Context context) {
         ObjectMapper obj = new ObjectMapper();
         int msg_id = Integer.parseInt(context.pathParam("message_id"));
@@ -107,6 +114,7 @@ public class SocialMediaController {
         }
     }
 
+    /* 
     private void updateMessageByIdHandler(Context context) throws JsonProcessingException {
         ObjectMapper obj = new ObjectMapper();
         Message message = obj.readValue(context.body(), Message.class);
