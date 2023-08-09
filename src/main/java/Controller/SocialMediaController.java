@@ -35,9 +35,9 @@ public class SocialMediaController {
         app.post("/messages", this::postNewMessageHandler);
         app.get("/messages", this::getAllMessagesHandler);
         app.get("/messages/{message_id}", this::getMessageByIdHandler);
-        // app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
-        // app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
-        // app.get("/accounts/{account_id}/messages", this::getAllMessagesByAccountIdHandler);
+        app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
+        app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
+        app.get("/accounts/{account_id}/messages", this::getAllMessagesByAccountIdHandler);
 
         return app;
     }
@@ -94,32 +94,37 @@ public class SocialMediaController {
 
 
      
-    private void getMessageByIdHandler(Context context) {
-        String str = context.pathParam("message_id");
-        int num = Integer.parseInt(str);
-    
-        context.json(messageService.getMessageById(num));
-    }
+    private void getMessageByIdHandler(Context context) {    
 
-    /*
-    private void deleteMessageByIdHandler(Context context) {
-        ObjectMapper obj = new ObjectMapper();
-        int msg_id = Integer.parseInt(context.pathParam("message_id"));
-        Message deletedMessage = messageService.deleteMessageById(msg_id);
+        Message message = messageService.getMessageById(Integer.parseInt(context.pathParam("message_id")));
 
-        if (deletedMessage == null) {
-            context.status(400);
+        if (message == null) {
+            context.json("");
         } else {
-            context.json(obj.writeValueAsString(deletedMessage));
+            context.json(message);
         }
+        
     }
 
-    /* 
+    
+    private void deleteMessageByIdHandler(Context context) {
+
+        Message message = messageService.deleteMessageById(Integer.parseInt(context.pathParam("message_id")));
+
+        if (message == null) {
+            context.json("");
+        } else {
+            context.json(message);
+        }
+        
+    }
+
+    
     private void updateMessageByIdHandler(Context context) throws JsonProcessingException {
         ObjectMapper obj = new ObjectMapper();
         Message message = obj.readValue(context.body(), Message.class);
-        int msg_id = Integer.parseInt(context.pathParam("message_id"));
-        Message updatedMessage = messageService.updateMessage(msg_id, message);
+        int id = Integer.parseInt(context.pathParam("message_id"));
+        Message updatedMessage = messageService.updateMessageById(id, message);
 
         if (updatedMessage == null) {
             context.status(400);
@@ -127,10 +132,11 @@ public class SocialMediaController {
             context.json(obj.writeValueAsString(updatedMessage));
         }
     }
+    
 
     private void getAllMessagesByAccountIdHandler(Context context) {
-        context.json(messageService.getAllMessagesByAccountId(context.pathParam("account_id")));
+        context.json(messageService.getAllMessagesByAccountId(Integer.parseInt(context.pathParam("account_id"))));
     }
 
-    */
+
 }
